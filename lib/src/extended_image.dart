@@ -59,6 +59,7 @@ class ExtendedImage extends StatefulWidget {
     this.isAntiAlias = false,
     this.handleLoadingProgress = false,
     this.layoutInsets = EdgeInsets.zero,
+    this.quarterTurns = 0,
   })  : assert(constraints == null || constraints.debugAssertIsValid()),
         constraints = (width != null || height != null)
             ? constraints?.tighten(width: width, height: height) ??
@@ -239,6 +240,7 @@ class ExtendedImage extends StatefulWidget {
     bool cacheRawData = false,
     String? imageCacheName,
     this.layoutInsets = EdgeInsets.zero,
+    this.quarterTurns = 0,
   })  : assert(cacheWidth == null || cacheWidth > 0),
         assert(cacheHeight == null || cacheHeight > 0),
         image = ExtendedResizeImage.resizeIfNeeded(
@@ -336,6 +338,7 @@ class ExtendedImage extends StatefulWidget {
     bool cacheRawData = false,
     String? imageCacheName,
     this.layoutInsets = EdgeInsets.zero,
+    this.quarterTurns = 0,
   })  :
         // FileImage is not supported on Flutter Web therefore neither this method.
         assert(
@@ -427,6 +430,7 @@ class ExtendedImage extends StatefulWidget {
     bool cacheRawData = false,
     String? imageCacheName,
     this.layoutInsets = EdgeInsets.zero,
+    this.quarterTurns = 0,
   })  : assert(cacheWidth == null || cacheWidth > 0),
         assert(cacheHeight == null || cacheHeight > 0),
         image = ExtendedResizeImage.resizeIfNeeded(
@@ -506,6 +510,7 @@ class ExtendedImage extends StatefulWidget {
     String? imageCacheName,
     Duration? cacheMaxAge,
     this.layoutInsets = EdgeInsets.zero,
+    this.quarterTurns = 0,
   })  : assert(cacheWidth == null || cacheWidth > 0),
         assert(cacheHeight == null || cacheHeight > 0),
         image = ExtendedResizeImage.resizeIfNeeded(
@@ -808,6 +813,9 @@ class ExtendedImage extends StatefulWidget {
   /// The image will still be painted in the full area.
   final EdgeInsets layoutInsets;
 
+  /// 旋转，1 为90度，2为180度，以此类推
+  final int quarterTurns;
+
   @override
   _ExtendedImageState createState() => _ExtendedImageState();
   @override
@@ -939,6 +947,9 @@ class _ExtendedImageState extends State<ExtendedImage>
   // registered).
   @override
   bool get wasSynchronouslyLoaded => _wasSynchronouslyLoaded;
+
+  @override
+  int get quarterTurns => widget.quarterTurns;
 
   @override
   Widget build(BuildContext context) {
@@ -1136,30 +1147,33 @@ class _ExtendedImageState extends State<ExtendedImage>
   }
 
   Widget _buildExtendedRawImage() {
-    return ExtendedRawImage(
-      // Do not clone the image, because RawImage is a stateless wrapper.
-      // The image will be disposed by this state object when it is not needed
-      // anymore, such as when it is unmounted or when the image stream pushes
-      // a new image.
-      image: _imageInfo?.image,
-      debugImageLabel: _imageInfo?.debugLabel,
-      width: widget.width,
-      height: widget.height,
-      scale: _imageInfo?.scale ?? 1.0,
-      color: widget.color,
-      opacity: widget.opacity,
-      colorBlendMode: widget.colorBlendMode,
-      fit: widget.fit,
-      alignment: widget.alignment,
-      repeat: widget.repeat,
-      centerSlice: widget.centerSlice,
-      matchTextDirection: widget.matchTextDirection,
-      invertColors: _invertColors,
-      isAntiAlias: widget.isAntiAlias,
-      filterQuality: widget.filterQuality,
-      beforePaintImage: widget.beforePaintImage,
-      afterPaintImage: widget.afterPaintImage,
-      layoutInsets: widget.layoutInsets,
+    return RotatedBox(
+      quarterTurns: widget.quarterTurns,
+      child: ExtendedRawImage(
+        // Do not clone the image, because RawImage is a stateless wrapper.
+        // The image will be disposed by this state object when it is not needed
+        // anymore, such as when it is unmounted or when the image stream pushes
+        // a new image.
+        image: _imageInfo?.image,
+        debugImageLabel: _imageInfo?.debugLabel,
+        width: widget.width,
+        height: widget.height,
+        scale: _imageInfo?.scale ?? 1.0,
+        color: widget.color,
+        opacity: widget.opacity,
+        colorBlendMode: widget.colorBlendMode,
+        fit: widget.fit,
+        alignment: widget.alignment,
+        repeat: widget.repeat,
+        centerSlice: widget.centerSlice,
+        matchTextDirection: widget.matchTextDirection,
+        invertColors: _invertColors,
+        isAntiAlias: widget.isAntiAlias,
+        filterQuality: widget.filterQuality,
+        beforePaintImage: widget.beforePaintImage,
+        afterPaintImage: widget.afterPaintImage,
+        layoutInsets: widget.layoutInsets,
+      ),
     );
   }
 

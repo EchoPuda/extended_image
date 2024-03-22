@@ -41,6 +41,8 @@ mixin ExtendedImageState {
 
   Object? get lastException;
   StackTrace? get lastStack;
+
+  int get quarterTurns;
 }
 
 enum ExtendedImageMode {

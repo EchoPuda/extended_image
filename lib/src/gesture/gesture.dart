@@ -72,25 +72,28 @@ class ExtendedImageGestureState extends State<ExtendedImageGesture>
           _gestureDetails;
     }
 
-    Widget image = ExtendedRawImage(
-      image: widget.extendedImageState.extendedImageInfo?.image,
-      width: widget.extendedImageState.imageWidget.width,
-      height: widget.extendedImageState.imageWidget.height,
-      scale: widget.extendedImageState.extendedImageInfo?.scale ?? 1.0,
-      color: widget.extendedImageState.imageWidget.color,
-      colorBlendMode: widget.extendedImageState.imageWidget.colorBlendMode,
-      fit: widget.extendedImageState.imageWidget.fit,
-      alignment: widget.extendedImageState.imageWidget.alignment,
-      repeat: widget.extendedImageState.imageWidget.repeat,
-      centerSlice: widget.extendedImageState.imageWidget.centerSlice,
-      matchTextDirection:
-          widget.extendedImageState.imageWidget.matchTextDirection,
-      invertColors: widget.extendedImageState.invertColors,
-      filterQuality: widget.extendedImageState.imageWidget.filterQuality,
-      beforePaintImage: widget.extendedImageState.imageWidget.beforePaintImage,
-      afterPaintImage: widget.extendedImageState.imageWidget.afterPaintImage,
-      gestureDetails: _gestureDetails,
-      layoutInsets: widget.extendedImageState.imageWidget.layoutInsets,
+    Widget image = RotatedBox(
+      quarterTurns: widget.extendedImageState.quarterTurns,
+      child: ExtendedRawImage(
+        image: widget.extendedImageState.extendedImageInfo?.image,
+        width: widget.extendedImageState.imageWidget.width,
+        height: widget.extendedImageState.imageWidget.height,
+        scale: widget.extendedImageState.extendedImageInfo?.scale ?? 1.0,
+        color: widget.extendedImageState.imageWidget.color,
+        colorBlendMode: widget.extendedImageState.imageWidget.colorBlendMode,
+        fit: widget.extendedImageState.imageWidget.fit,
+        alignment: widget.extendedImageState.imageWidget.alignment,
+        repeat: widget.extendedImageState.imageWidget.repeat,
+        centerSlice: widget.extendedImageState.imageWidget.centerSlice,
+        matchTextDirection:
+            widget.extendedImageState.imageWidget.matchTextDirection,
+        invertColors: widget.extendedImageState.invertColors,
+        filterQuality: widget.extendedImageState.imageWidget.filterQuality,
+        beforePaintImage: widget.extendedImageState.imageWidget.beforePaintImage,
+        afterPaintImage: widget.extendedImageState.imageWidget.afterPaintImage,
+        gestureDetails: _gestureDetails,
+        layoutInsets: widget.extendedImageState.imageWidget.layoutInsets,
+      ),
     );
 
     if (extendedImageSlidePageState != null) {
